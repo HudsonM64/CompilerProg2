@@ -1,14 +1,17 @@
 package Absyn;
 import Symbol.Symbol;
-public class FunctionDec extends Dec {
-  public Symbol name;
-  public FieldList params;
-  public NameTy result;		/* optional */
-  public Exp body;
-  public FunctionDec next;
-  public FunctionDec(int p, Symbol n, FieldList a, NameTy r, Exp b,
-		     FunctionDec x) {
-    pos=p; name=n; params=a; result=r; body=b; next=x;
-  }
-  public boolean leaf = false;
+
+public class FunctionDecl extends Absyn {
+    public Type returnType;
+    public Symbol name;
+    public ParamList params;
+    public StmtList body;
+
+    public FunctionDecl(int p, Type t, Symbol n, ParamList pl, StmtList b) {
+        super(p);
+        returnType = t;
+        name = n;
+        params = pl;
+        body = b;
+    }
 }

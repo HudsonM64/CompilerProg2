@@ -1,9 +1,10 @@
 package Parse;
 
-action code {: static Symbol.Symbol sym(String s) {
-	         return Symbol.Symbol.symbol(s);
-	        }
-	    :};
+action code {: 
+    static Symbol.Symbol sym(String s) { 
+        return Symbol.Symbol.symbol(s); 
+    }
+:};
 
 parser code  {: 
   Lexer lexer;
@@ -20,31 +21,118 @@ parser code  {:
 
   public Grm(Lexer l, ErrorMsg.ErrorMsg err) {
     this();
-    errorMsg=err;
-    lexer=l;
+    errorMsg = err;
+    lexer = l;
   }
 :};
 
 scan with {: return lexer.nextToken(); :};
 
-terminal String ID, STRING;
+terminal String ID;
 terminal Integer INT;
-terminal COMMA, COLON, SEMICOLON, LPAREN, RPAREN, LBRACK, RBRACK, 
-	LBRACE, RBRACE, DOT, PLUS, MINUS, TIMES, DIVIDE, EQ, NEQ, LT, LE, 
-	GT, GE, AND, OR, ASSIGN, ARRAY, IF, THEN, ELSE, WHILE, FOR, TO,
-	DO, LET, IN, END, OF, BREAK, NIL, FUNCTION, VAR, TYPE;
+terminal Double FLOAT;
+terminal Char CHAR;
 
-non terminal Absyn.Exp          Exp;
-non terminal Absyn.Var          Var;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, LBRACK, RBRACK;
+terminal COMMA, SEMICOLON, COLON, ASSIGN;
+terminal PLUS, MINUS, TIMES, DIVIDE, MOD;
+terminal EQ, NEQ, LT, LE, GT, GE, AND, OR, NOT;
+terminal IF, ELSE, WHILE, FOR, RETURN;
+terminal INT_T, FLOAT_T, CHAR_T, VOID_T; // Type keywords
 
-start with Exp;
+// Non-terminals
+non terminal Absyn.Program         Program;
+non terminal Absyn.DeclList        DeclList;
+non terminal Absyn.Decl            Decl;
+non terminal Absyn.StmtList        StmtList;
+non terminal Absyn.Stmt            Stmt;
+non terminal Absyn.Exp             Exp;
+non terminal Absyn.Var             Var;
+non terminal Absyn.Type            Type;
+non terminal Absyn.ParamList       ParamList;
 
-Exp ::= error:e
-	  {: RESULT = new Absyn.SeqExp(eleft, null); :}
-	| Var:v
-	  {: RESULT = new Absyn.VarExp(vleft, v); :}
-	;
+// Start Symbol
+start with Program;
 
-Var ::=   ID:n
-	  {: RESULT = new Absyn.SimpleVar(nleft, sym(n)); :}
-	;
+Program ::= DeclList:d 
+    {: RESULT = new Absyn.Program(d); :}
+    ;
+
+DeclList ::= Decl:d DeclList:dl
+    {: RESULT = new Absyn.DeclList(d, dl); :}
+    | 
+    {: RESULT = null; :} // Empty list
+    ;
+
+// Declarations (functions and variables)
+Decl ::= Type:t ID:n LPAREN ParamList:p RPAREN LBRACE StmtList:s RBRACE
+    {: RESULT = new Absyn.FunctionDecl(t, sym(n), p, s); :}
+    |
+    Type:t ID:n SEMICOLON
+    {: RESULT = new Absyn.VarDecl(t, sym(n)); :}
+    ;
+
+// Type Definitions
+Type ::= INT_T  {: RESULT = new Absyn.Type("int"); :}
+     | FLOAT_T  {: RESULT = new Absyn.Type("float"); :}
+     | CHAR_T   {: RESULT = new Absyn.Type("char"); :}
+     | VOID_T   {: RESULT = new Absyn.Type("void"); :}
+     ;
+
+// Statements
+StmtList ::= Stmt:s StmtList:sl 
+    {: RESULT = new Absyn.StmtList(s, sl); :}
+    |
+    {: RESULT = null; :} // Empty statement list
+    ;
+
+Stmt ::= IF LPAREN Exp:e RPAREN Stmt:s ELSE Stmt:s2
+    {: RESULT = new Absyn.IfStmt(e, s, s2); :}
+    |
+    WHILE LPAREN Exp:e RPAREN Stmt:s
+    {: RESULT = new Absyn.WhileStmt(e, s); :}
+    |
+    RETURN Exp:e SEMICOLON
+    {: RESULT = new Absyn.ReturnStmt(e); :}
+    |
+    Exp:e SEMICOLON
+    {: RESULT = new Absyn.ExpStmt(e); :}
+    ;
+
+// Expressions
+Exp ::= Exp:e1 PLUS Exp:e2
+    {: RESULT = new Absyn.BinOpExp(e1, "+", e2); :}
+    |
+    Exp:e1 MINUS Exp:e2
+    {: RESULT = new Absyn.BinOpExp(e1, "-", e2); :}
+    |
+    Exp:e1 TIMES Exp:e2
+    {: RESULT = new Absyn.BinOpExp(e1, "*", e2); :}
+    |
+    Exp:e1 DIVIDE Exp:e2
+    {: RESULT = new Absyn.BinOpExp(e1, "/", e2); :}
+    |
+    LPAREN Exp:e RPAREN
+    {: RESULT = e; :}
+    |
+    ID:n
+    {: RESULT = new Absyn.VarExp(sym(n)); :}
+    |
+    INT:n
+    {: RESULT = new Absyn.IntExp(n); :}
+    ;
+
+// Variable references
+Var ::= ID:n
+    {: RESULT = new Absyn.Var(sym(n)); :}
+    ;
+
+// Function Parameters
+ParamList ::= Type:t ID:n COMMA ParamList:pl
+    {: RESULT = new Absyn.ParamList(t, sym(n), pl); :}
+    |
+    Type:t ID:n
+    {: RESULT = new Absyn.ParamList(t, sym(n), null); :}
+    |
+    {: RESULT = null; :} // Empty parameter list
+    ;
