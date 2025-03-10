@@ -1,0 +1,415 @@
+Opening files...
+Parsing specification from standard input...
+Checking specification...
+Warning: Terminal "SHORT" was declared but never used
+Warning: Terminal "TIMES" was declared but never used
+Warning: Terminal "GT" was declared but never used
+Warning: Terminal "ARROW" was declared but never used
+Warning: Terminal "DIVASSIGN" was declared but never used
+Warning: Terminal "TYPE" was declared but never used
+Warning: Terminal "CONST" was declared but never used
+Warning: Terminal "GE" was declared but never used
+Warning: Terminal "PERIOD" was declared but never used
+Warning: Terminal "REGISTER" was declared but never used
+Warning: Terminal "ENUM" was declared but never used
+Warning: Terminal "SIZEOF" was declared but never used
+Warning: Terminal "COMMA" was declared but never used
+Warning: Terminal "LT" was declared but never used
+Warning: Terminal "INCREMENT" was declared but never used
+Warning: Terminal "SUBASSIGN" was declared but never used
+Warning: Terminal "DOUBLE" was declared but never used
+Warning: Terminal "BWISEANDASSIGN" was declared but never used
+Warning: Terminal "STRUCT" was declared but never used
+Warning: Terminal "MODASSIGN" was declared but never used
+Warning: Terminal "TILDE" was declared but never used
+Warning: Terminal "NIL" was declared but never used
+Warning: Terminal "ARRAY" was declared but never used
+Warning: Terminal "LE" was declared but never used
+Warning: Terminal "BITWISEAND" was declared but never used
+Warning: Terminal "FLOAT" was declared but never used
+Warning: Terminal "THEN" was declared but never used
+Warning: Terminal "GOTO" was declared but never used
+Warning: Terminal "LSHIFTASSIGN" was declared but never used
+Warning: Terminal "MODULUS" was declared but never used
+Warning: Terminal "LONG" was declared but never used
+Warning: Terminal "PLUS" was declared but never used
+Warning: Terminal "DIVIDE" was declared but never used
+Warning: Terminal "WHILE" was declared but never used
+Warning: Terminal "UNION" was declared but never used
+Warning: Terminal "CHAR" was declared but never used
+Warning: Terminal "ADDASSIGN" was declared but never used
+Warning: Terminal "DO" was declared but never used
+Warning: Terminal "FOR" was declared but never used
+Warning: Terminal "VOID" was declared but never used
+Warning: Terminal "EXTERN" was declared but never used
+Warning: Terminal "RETURN" was declared but never used
+Warning: Terminal "ELSE" was declared but never used
+Warning: Terminal "BREAK" was declared but never used
+Warning: Terminal "FUN" was declared but never used
+Warning: Terminal "MULASSIGN" was declared but never used
+Warning: Terminal "ELIPSES" was declared but never used
+Warning: Terminal "DECREMENT" was declared but never used
+Warning: Terminal "MINUS" was declared but never used
+Warning: Terminal "OR" was declared but never used
+Warning: Terminal "DECIMAL_LITERAL" was declared but never used
+Warning: Terminal "CONTINUE" was declared but never used
+Warning: Terminal "IF" was declared but never used
+Warning: Terminal "BWISEOR" was declared but never used
+Warning: Terminal "OF" was declared but never used
+Warning: Terminal "COLON" was declared but never used
+Warning: Terminal "BWISEXOR" was declared but never used
+Warning: Terminal "BWISEORASSIGN" was declared but never used
+Warning: Terminal "RSHIFTASSIGN" was declared but never used
+Warning: Terminal "VOLATILE" was declared but never used
+Warning: Terminal "CHAR_LITERAL" was declared but never used
+Warning: Terminal "RSHIFT" was declared but never used
+Warning: Terminal "STRING" was declared but never used
+Warning: Terminal "BWISEXORASSIGN" was declared but never used
+Warning: Terminal "NEQ" was declared but never used
+Warning: Terminal "AND" was declared but never used
+Warning: Terminal "TO" was declared but never used
+Warning: Terminal "STATIC" was declared but never used
+Warning: Terminal "LSHIFT" was declared but never used
+Warning: Terminal "TYPEDEF" was declared but never used
+Warning: Terminal "AUTO" was declared but never used
+Warning: Non terminal "type" was declared but never used
+Warning: Non terminal "optFields" was declared but never used
+Warning: Non terminal "optArguments" was declared but never used
+Warning: Non terminal "optTypes" was declared but never used
+Warning: Non terminal "optFieldExps" was declared but never used
+Warning: Non terminal "arguments" was declared but never used
+Building parse tables...
+  Computing non-terminal nullability...
+  Computing first sets...
+  Building state machine...
+  Filling in tables...
+  Checking for non-reduced productions...
+*** Production "subscriptVar ::= fieldVar LBRACK Exp RBRACK " never reduced
+*** Production "subscriptVar ::= ID LBRACK Exp RBRACK " never reduced
+*** Production "fieldVar ::= Var DOT ID " never reduced
+Writing parser...
+===== Terminals =====
+SHORT TIMES GT ARROW DIVASSIGN 
+TYPE CONST GE PERIOD REGISTER 
+ENUM RBRACK SIZEOF COMMA RBRACE 
+RPAREN LBRACK LT INCREMENT SUBASSIGN 
+DOUBLE BWISEANDASSIGN STRUCT LBRACE LPAREN 
+MODASSIGN TILDE NIL ARRAY LE 
+VAR BITWISEAND FLOAT THEN GOTO 
+EQ LSHIFTASSIGN MODULUS LONG PLUS 
+DIVIDE WHILE UNION ASSIGN CHAR 
+ADDASSIGN DO FOR VOID EXTERN 
+RETURN ELSE BREAK FUN DOT 
+INT EOF SEMICOLON MULASSIGN ELIPSES 
+FUNCTION DECREMENT MINUS IN OR 
+error DECIMAL_LITERAL CONTINUE IF BWISEOR 
+ID OF END COLON BWISEXOR 
+BWISEORASSIGN RSHIFTASSIGN VOLATILE CHAR_LITERAL RSHIFT 
+STRING BWISEXORASSIGN NEQ AND TO 
+STATIC LSHIFT LET TYPEDEF AUTO 
+
+
+===== Non terminals =====
+Var type fieldVar fieldExps nameType 
+optFields $START empty sequence typeDec 
+subscriptVar functionDec optArguments decList dec 
+fields Exp optFunctions optTypes seqTail 
+optFieldExps ExpList arguments 
+
+===== Productions =====
+functionDec ::= FUNCTION ID LPAREN fields RPAREN nameType EQ Exp optFunctions 
+dec ::= typeDec 
+dec ::= VAR ID nameType ASSIGN Exp 
+dec ::= functionDec 
+decList ::= dec 
+subscriptVar ::= fieldVar LBRACK Exp RBRACK 
+subscriptVar ::= ID LBRACK Exp RBRACK 
+fieldVar ::= Var DOT ID 
+seqTail ::= sequence 
+seqTail ::= Exp 
+sequence ::= Exp SEMICOLON seqTail 
+ExpList ::= 
+ExpList ::= sequence 
+ExpList ::= Exp 
+ExpList ::= empty 
+Exp ::= LET decList IN ExpList END 
+Exp ::= ID LBRACE fieldExps RBRACE 
+Exp ::= INT 
+$START ::= Exp EOF 
+
+===== Viable Prefix Recognizer =====
+START lalr_state [0]: {
+  [Exp ::= (*) ID LBRACE fieldExps RBRACE , {EOF }]
+  [Exp ::= (*) INT , {EOF }]
+  [Exp ::= (*) LET decList IN ExpList END , {EOF }]
+  [$START ::= (*) Exp EOF , {EOF }]
+}
+transition on INT to state [4]
+transition on Exp to state [3]
+transition on LET to state [2]
+transition on ID to state [1]
+
+-------------------
+lalr_state [1]: {
+  [Exp ::= ID (*) LBRACE fieldExps RBRACE , {EOF SEMICOLON IN END }]
+}
+transition on LBRACE to state [34]
+
+-------------------
+lalr_state [2]: {
+  [dec ::= (*) VAR ID nameType ASSIGN Exp , {IN }]
+  [functionDec ::= (*) FUNCTION ID LPAREN fields RPAREN nameType EQ Exp optFunctions , {IN }]
+  [dec ::= (*) functionDec , {IN }]
+  [dec ::= (*) typeDec , {IN }]
+  [Exp ::= LET (*) decList IN ExpList END , {EOF SEMICOLON IN END }]
+  [decList ::= (*) dec , {IN }]
+}
+transition on functionDec to state [11]
+transition on dec to state [10]
+transition on FUNCTION to state [9]
+transition on typeDec to state [8]
+transition on VAR to state [7]
+transition on decList to state [6]
+
+-------------------
+lalr_state [3]: {
+  [$START ::= Exp (*) EOF , {EOF }]
+}
+transition on EOF to state [5]
+
+-------------------
+lalr_state [4]: {
+  [Exp ::= INT (*) , {EOF SEMICOLON IN END }]
+}
+
+-------------------
+lalr_state [5]: {
+  [$START ::= Exp EOF (*) , {EOF }]
+}
+
+-------------------
+lalr_state [6]: {
+  [Exp ::= LET decList (*) IN ExpList END , {EOF SEMICOLON IN END }]
+}
+transition on IN to state [24]
+
+-------------------
+lalr_state [7]: {
+  [dec ::= VAR (*) ID nameType ASSIGN Exp , {IN }]
+}
+transition on ID to state [20]
+
+-------------------
+lalr_state [8]: {
+  [dec ::= typeDec (*) , {IN }]
+}
+
+-------------------
+lalr_state [9]: {
+  [functionDec ::= FUNCTION (*) ID LPAREN fields RPAREN nameType EQ Exp optFunctions , {IN }]
+}
+transition on ID to state [12]
+
+-------------------
+lalr_state [10]: {
+  [decList ::= dec (*) , {IN }]
+}
+
+-------------------
+lalr_state [11]: {
+  [dec ::= functionDec (*) , {IN }]
+}
+
+-------------------
+lalr_state [12]: {
+  [functionDec ::= FUNCTION ID (*) LPAREN fields RPAREN nameType EQ Exp optFunctions , {IN }]
+}
+transition on LPAREN to state [13]
+
+-------------------
+lalr_state [13]: {
+  [functionDec ::= FUNCTION ID LPAREN (*) fields RPAREN nameType EQ Exp optFunctions , {IN }]
+}
+transition on fields to state [14]
+
+-------------------
+lalr_state [14]: {
+  [functionDec ::= FUNCTION ID LPAREN fields (*) RPAREN nameType EQ Exp optFunctions , {IN }]
+}
+transition on RPAREN to state [15]
+
+-------------------
+lalr_state [15]: {
+  [functionDec ::= FUNCTION ID LPAREN fields RPAREN (*) nameType EQ Exp optFunctions , {IN }]
+}
+transition on nameType to state [16]
+
+-------------------
+lalr_state [16]: {
+  [functionDec ::= FUNCTION ID LPAREN fields RPAREN nameType (*) EQ Exp optFunctions , {IN }]
+}
+transition on EQ to state [17]
+
+-------------------
+lalr_state [17]: {
+  [Exp ::= (*) ID LBRACE fieldExps RBRACE , {}]
+  [Exp ::= (*) INT , {}]
+  [functionDec ::= FUNCTION ID LPAREN fields RPAREN nameType EQ (*) Exp optFunctions , {IN }]
+  [Exp ::= (*) LET decList IN ExpList END , {}]
+}
+transition on INT to state [4]
+transition on Exp to state [18]
+transition on LET to state [2]
+transition on ID to state [1]
+
+-------------------
+lalr_state [18]: {
+  [functionDec ::= FUNCTION ID LPAREN fields RPAREN nameType EQ Exp (*) optFunctions , {IN }]
+}
+transition on optFunctions to state [19]
+
+-------------------
+lalr_state [19]: {
+  [functionDec ::= FUNCTION ID LPAREN fields RPAREN nameType EQ Exp optFunctions (*) , {IN }]
+}
+
+-------------------
+lalr_state [20]: {
+  [dec ::= VAR ID (*) nameType ASSIGN Exp , {IN }]
+}
+transition on nameType to state [21]
+
+-------------------
+lalr_state [21]: {
+  [dec ::= VAR ID nameType (*) ASSIGN Exp , {IN }]
+}
+transition on ASSIGN to state [22]
+
+-------------------
+lalr_state [22]: {
+  [Exp ::= (*) ID LBRACE fieldExps RBRACE , {IN }]
+  [Exp ::= (*) INT , {IN }]
+  [dec ::= VAR ID nameType ASSIGN (*) Exp , {IN }]
+  [Exp ::= (*) LET decList IN ExpList END , {IN }]
+}
+transition on INT to state [4]
+transition on Exp to state [23]
+transition on LET to state [2]
+transition on ID to state [1]
+
+-------------------
+lalr_state [23]: {
+  [dec ::= VAR ID nameType ASSIGN Exp (*) , {IN }]
+}
+
+-------------------
+lalr_state [24]: {
+  [sequence ::= (*) Exp SEMICOLON seqTail , {END }]
+  [ExpList ::= (*) Exp , {END }]
+  [Exp ::= (*) ID LBRACE fieldExps RBRACE , {SEMICOLON END }]
+  [ExpList ::= (*) , {END }]
+  [ExpList ::= (*) empty , {END }]
+  [Exp ::= (*) INT , {SEMICOLON END }]
+  [Exp ::= LET decList IN (*) ExpList END , {EOF SEMICOLON IN END }]
+  [ExpList ::= (*) sequence , {END }]
+  [Exp ::= (*) LET decList IN ExpList END , {SEMICOLON END }]
+}
+transition on INT to state [4]
+transition on sequence to state [28]
+transition on empty to state [27]
+transition on ExpList to state [26]
+transition on Exp to state [25]
+transition on LET to state [2]
+transition on ID to state [1]
+
+-------------------
+lalr_state [25]: {
+  [ExpList ::= Exp (*) , {END }]
+  [sequence ::= Exp (*) SEMICOLON seqTail , {END }]
+}
+transition on SEMICOLON to state [30]
+
+-------------------
+lalr_state [26]: {
+  [Exp ::= LET decList IN ExpList (*) END , {EOF SEMICOLON IN END }]
+}
+transition on END to state [29]
+
+-------------------
+lalr_state [27]: {
+  [ExpList ::= empty (*) , {END }]
+}
+
+-------------------
+lalr_state [28]: {
+  [ExpList ::= sequence (*) , {END }]
+}
+
+-------------------
+lalr_state [29]: {
+  [Exp ::= LET decList IN ExpList END (*) , {EOF SEMICOLON IN END }]
+}
+
+-------------------
+lalr_state [30]: {
+  [sequence ::= (*) Exp SEMICOLON seqTail , {END }]
+  [Exp ::= (*) ID LBRACE fieldExps RBRACE , {SEMICOLON END }]
+  [seqTail ::= (*) sequence , {END }]
+  [Exp ::= (*) INT , {SEMICOLON END }]
+  [seqTail ::= (*) Exp , {END }]
+  [Exp ::= (*) LET decList IN ExpList END , {SEMICOLON END }]
+  [sequence ::= Exp SEMICOLON (*) seqTail , {END }]
+}
+transition on sequence to state [33]
+transition on INT to state [4]
+transition on Exp to state [32]
+transition on LET to state [2]
+transition on seqTail to state [31]
+transition on ID to state [1]
+
+-------------------
+lalr_state [31]: {
+  [sequence ::= Exp SEMICOLON seqTail (*) , {END }]
+}
+
+-------------------
+lalr_state [32]: {
+  [seqTail ::= Exp (*) , {END }]
+  [sequence ::= Exp (*) SEMICOLON seqTail , {END }]
+}
+transition on SEMICOLON to state [30]
+
+-------------------
+lalr_state [33]: {
+  [seqTail ::= sequence (*) , {END }]
+}
+
+-------------------
+lalr_state [34]: {
+  [Exp ::= ID LBRACE (*) fieldExps RBRACE , {EOF SEMICOLON IN END }]
+}
+transition on fieldExps to state [35]
+
+-------------------
+lalr_state [35]: {
+  [Exp ::= ID LBRACE fieldExps (*) RBRACE , {EOF SEMICOLON IN END }]
+}
+transition on RBRACE to state [36]
+
+-------------------
+lalr_state [36]: {
+  [Exp ::= ID LBRACE fieldExps RBRACE (*) , {EOF SEMICOLON IN END }]
+}
+
+-------------------
+Closing files...
+------- CUP v0.10g Parser Generation Summary -------
+  0 errors and 80 warnings
+  90 terminals, 23 non terminals, and 19 productions declared, 
+  producing 37 unique parse states.
+  77 terminals declared but not used.
+  0 non terminals declared but not used.
+  0 productions never reduced.
+  0 conflicts detected (3 expected).
+  Code written to "Grm.java", and "sym.java".
+---------------------------------------------------- (v0.10g)

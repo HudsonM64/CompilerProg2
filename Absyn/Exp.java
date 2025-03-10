@@ -1,7 +1,4 @@
 package Absyn;
-
-public abstract class Exp extends Absyn {
-    public Exp(int p) {
-        super(p);
-    }
+import Symbol.Symbol;
+abstract public class Exp extends Absyn {
 }
